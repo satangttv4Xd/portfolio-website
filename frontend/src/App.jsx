@@ -14,7 +14,6 @@ import Experience from "./components/sections/Experience.jsx";
 import Contact from "./components/sections/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import EditModePanel from "./components/EditModePanel.jsx";
-
 export default function App() {
   const [data, setData] = useState(null);
   const [loadError, setLoadError] = useState("");
@@ -92,6 +91,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-archive-bg">
+
       <Navbar
         name={data.profile.name}
         editMode={editOpen}

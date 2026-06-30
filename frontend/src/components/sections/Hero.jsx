@@ -13,7 +13,7 @@ const SOCIAL_ICONS = {
   behance: Dribbble,
 };
 
-export default function Hero({ profile, exporting = false, themeColor }) {
+export default function Hero({ profile, exporting = false, themeColor, colorMode = 'dark' }) {
   const socials = Object.entries(profile.socials || {}).filter(([, url]) => url);
   const glowColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-glow-hex').trim() || '#F2A65A';
 
@@ -21,7 +21,7 @@ export default function Hero({ profile, exporting = false, themeColor }) {
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden pt-24">
       {!exporting && <ParticleField count={70} />}
 
-      {/* Antigravity — magnetic particle ring that follows the cursor */}
+      {/* Antigravity — magnetic particle ring */}
       {!exporting && <div className="absolute inset-0 z-0" aria-hidden="true">
         <SilentErrorBoundary>
         <Suspense fallback={null}>

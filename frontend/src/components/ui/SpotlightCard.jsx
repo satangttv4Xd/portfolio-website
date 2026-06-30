@@ -29,7 +29,7 @@ export default function SpotlightCard({ children, className = "" }) {
         className="pointer-events-none absolute inset-0 transition-opacity duration-500"
         style={{
           opacity,
-          background: `radial-gradient(380px circle at ${pos.x}% ${pos.y}%, rgba(217,119,46,0.18), transparent 70%)`,
+          background: `radial-gradient(380px circle at ${pos.x}% ${pos.y}%, rgba(var(--accent-rgb),0.18), transparent 70%)`,
         }}
         aria-hidden="true"
       />

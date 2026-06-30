@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Pipette, Moon, Sun, Terminal } from 'lucide-react';
+import { Pipette, Moon, Sun } from 'lucide-react';
 
 const PRESETS = [
   { hex: '#D9772E', label: 'Amber' },
@@ -21,18 +21,14 @@ export default function ThemeColorPicker({ color, onChange, mode, onModeChange }
       {/* Dark / Light / Hacker Mode */}
       <div>
         <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">โหมด</p>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {[
-            { key: 'dark',   Icon: Moon,     label: 'Dark' },
-            { key: 'light',  Icon: Sun,      label: 'Light' },
-            { key: 'hacker', Icon: Terminal, label: 'Hacker' },
+            { key: 'dark',  Icon: Moon, label: 'Dark' },
+            { key: 'light', Icon: Sun,  label: 'Light' },
           ].map(({ key, Icon, label }) => (
             <button
               key={key}
-              onClick={() => {
-                onModeChange(key);
-                if (key === 'hacker') onChange('#00FF41');
-              }}
+              onClick={() => onModeChange(key)}
               className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border py-3 font-mono text-[10px] uppercase tracking-[0.12em] transition-all ${
                 mode === key
                   ? 'border-amber bg-archive-panelSolid text-amber'

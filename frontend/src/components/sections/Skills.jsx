@@ -29,10 +29,11 @@ function SkillBar({ skill, index }) {
       </div>
       <div className="h-[3px] w-full overflow-hidden rounded-full bg-archive-line">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-amber-soft to-amber transition-[width] duration-[1200ms] ease-out"
+          className="h-full rounded-full transition-[width] duration-[1200ms] ease-out"
           style={{
             width: visible ? `${skill.level}%` : "0%",
             transitionDelay: `${index * 90}ms`,
+            backgroundImage: 'linear-gradient(to right, var(--accent-soft-hex), var(--accent-hex))',
           }}
         />
       </div>

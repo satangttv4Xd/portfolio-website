@@ -66,8 +66,9 @@ export function applyThemeColor(hex) {
   if (!el) {
     el = document.createElement('style');
     el.id = '__theme__';
-    document.head.appendChild(el);
   }
+  // ย้ายไปท้าย <head> ทุกครั้ง เพื่อให้ชนะ Vite-injected CSS ที่อาจ inject ทีหลัง
+  document.head.appendChild(el);
 
   el.textContent = `
     .text-amber { color: ${hex}; }

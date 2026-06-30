@@ -25,15 +25,14 @@ const LIGHT = {
 };
 
 export function applyColorMode(mode) {
-  // hacker ใช้ color scheme เดียวกับ dark
   const c = mode === 'light' ? LIGHT : DARK;
 
   let el = document.getElementById('__mode__');
   if (!el) {
     el = document.createElement('style');
     el.id = '__mode__';
-    document.head.appendChild(el);
   }
+  document.head.appendChild(el);
 
   el.textContent = `
     body { background-color: ${c.body}; color: ${c.ink}; }
@@ -51,8 +50,9 @@ export function applyColorMode(mode) {
   localStorage.setItem('colorMode', mode);
 }
 
-// รันทันทีตอน module load
-const _initMode = localStorage.getItem('colorMode') || 'dark';
+// รันทันทีตอน module load — fallback hacker → dark
+const _stored = localStorage.getItem('colorMode') || 'dark';
+const _initMode = _stored === 'hacker' ? 'dark' : _stored;
 applyColorMode(_initMode);
 
 export function useColorMode() {
