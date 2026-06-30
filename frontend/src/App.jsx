@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useThemeColor } from "./hooks/useThemeColor.js";
 import { useColorMode } from "./hooks/useColorMode.js";
-import { AlertTriangle, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { fetchPortfolio, savePortfolio, resetPortfolio } from "./api/api.js";
 import { exportElementToPdf } from "./utils/exportPdf.js";
 
@@ -16,7 +16,6 @@ import Footer from "./components/Footer.jsx";
 import EditModePanel from "./components/EditModePanel.jsx";
 export default function App() {
   const [data, setData] = useState(null);
-  const [loadError, setLoadError] = useState("");
   const [editOpen, setEditOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
   const printRef = useRef(null);
@@ -28,13 +27,8 @@ export default function App() {
   }, []);
 
   async function load() {
-    setLoadError("");
-    try {
-      const portfolio = await fetchPortfolio();
-      setData(portfolio);
-    } catch (err) {
-      setLoadError(err.message || "เชื่อมต่อ backend ไม่สำเร็จ");
-    }
+    const portfolio = await fetchPortfolio();
+    setData(portfolio);
   }
 
   async function handleSave(newData) {
@@ -59,26 +53,6 @@ export default function App() {
     } finally {
       setExporting(false);
     }
-  }
-
-  if (loadError) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-archive-bg px-6 text-center">
-        <AlertTriangle className="text-amber" size={32} />
-        <p className="max-w-md text-ink-dim">
-          เชื่อมต่อ backend ไม่สำเร็จ: {loadError}
-          <br />
-          ตรวจสอบว่ารันคำสั่ง <code className="text-amber">npm run dev</code> ในโฟลเดอร์ <code className="text-amber">backend</code> อยู่หรือไม่
-          (ดูขั้นตอนใน คู่มือการใช้งาน.md)
-        </p>
-        <button
-          onClick={load}
-          className="rounded-full border border-archive-line px-5 py-2 font-mono text-xs uppercase tracking-[0.15em] text-ink-dim hover:border-amber hover:text-ink"
-        >
-          ลองใหม่อีกครั้ง
-        </button>
-      </div>
-    );
   }
 
   if (!data) {

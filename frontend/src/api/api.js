@@ -1,45 +1,32 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import defaultData from "../data/portfolioDefault.json";
+
+const STORAGE_KEY = "portfolio_data";
 
 export function assetUrl(path) {
   if (!path) return "";
-  if (path.startsWith("http")) return path;
-  return `${API_URL}${path}`;
+  return path;
 }
 
 export async function fetchPortfolio() {
-  const res = await fetch(`${API_URL}/api/portfolio`);
-  if (!res.ok) throw new Error("โหลดข้อมูลพอร์ตโฟลิโอไม่สำเร็จ");
-  return res.json();
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored ? JSON.parse(stored) : defaultData;
 }
 
 export async function savePortfolio(data) {
-  const res = await fetch(`${API_URL}/api/portfolio`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("บันทึกข้อมูลไม่สำเร็จ");
-  return res.json();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  return { ok: true, data };
 }
 
 export async function resetPortfolio() {
-  const res = await fetch(`${API_URL}/api/portfolio/reset`, { method: "POST" });
-  if (!res.ok) throw new Error("รีเซ็ตข้อมูลไม่สำเร็จ");
-  return res.json();
+  localStorage.removeItem(STORAGE_KEY);
+  return { ok: true, data: defaultData };
 }
 
 export async function uploadImage(file) {
-  const formData = new FormData();
-  formData.append("image", file);
-  const res = await fetch(`${API_URL}/api/upload`, {
-    method: "POST",
-    body: formData,
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve({ url: e.target.result });
+    reader.onerror = () => reject(new Error("อ่านไฟล์ไม่สำเร็จ"));
+    reader.readAsDataURL(file);
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || "อัปโหลดรูปภาพไม่สำเร็จ");
-  }
-  return res.json(); // { url }
 }
-
-export { API_URL };
