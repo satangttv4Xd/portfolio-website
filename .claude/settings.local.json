@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Read(//c/Users/Satang/AppData/Local/Temp/claude/d--Code-PortFolioCyber-portfolio-website/3816644a-efa4-4991-9af3-e97d368b163f/tasks/**)",
-      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)"
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "Bash(git restore *)"
     ]
   }
 }
