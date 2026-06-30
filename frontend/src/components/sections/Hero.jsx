@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { Github, Linkedin, Facebook, Instagram, Dribbble, MapPin } from "lucide-react";
 import ParticleField from "../ui/ParticleField.jsx";
 import Antigravity from "../ui/Antigravity.jsx";
+import SilentErrorBoundary from "../ui/SilentErrorBoundary.jsx";
 import { assetUrl } from "../../api/api.js";
 
 const SOCIAL_ICONS = {
@@ -11,38 +13,43 @@ const SOCIAL_ICONS = {
   behance: Dribbble,
 };
 
-export default function Hero({ profile }) {
+export default function Hero({ profile, exporting = false, themeColor }) {
   const socials = Object.entries(profile.socials || {}).filter(([, url]) => url);
+  const glowColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-glow-hex').trim() || '#F2A65A';
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden pt-24">
-      <ParticleField count={70} />
+      {!exporting && <ParticleField count={70} />}
 
       {/* Antigravity — magnetic particle ring that follows the cursor */}
-      <div className="absolute inset-0 z-0" aria-hidden="true">
-        <Antigravity
-          count={180}
-          magnetRadius={8}
-          ringRadius={5}
-          waveSpeed={0.35}
-          waveAmplitude={0.9}
-          particleSize={1.3}
-          lerpSpeed={0.05}
-          color="#F2A65A"
-          autoAnimate={true}
-          particleVariance={0.9}
-          rotationSpeed={0.04}
-          depthFactor={0.8}
-          pulseSpeed={2.5}
-          fieldStrength={12}
-        />
-      </div>
+      {!exporting && <div className="absolute inset-0 z-0" aria-hidden="true">
+        <SilentErrorBoundary>
+        <Suspense fallback={null}>
+          <Antigravity
+            count={180}
+            magnetRadius={8}
+            ringRadius={5}
+            waveSpeed={0.35}
+            waveAmplitude={0.9}
+            particleSize={1.3}
+            lerpSpeed={0.05}
+            color={glowColor}
+            autoAnimate={true}
+            particleVariance={0.9}
+            rotationSpeed={0.04}
+            depthFactor={0.8}
+            pulseSpeed={2.5}
+            fieldStrength={12}
+          />
+        </Suspense>
+        </SilentErrorBoundary>
+      </div>}
 
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(800px circle at 80% 20%, rgba(217,119,46,0.12), transparent 60%), radial-gradient(600px circle at 10% 80%, rgba(217,119,46,0.08), transparent 60%)",
+            "radial-gradient(800px circle at 80% 20%, rgba(var(--accent-rgb),0.12), transparent 60%), radial-gradient(600px circle at 10% 80%, rgba(var(--accent-rgb),0.08), transparent 60%)",
         }}
         aria-hidden="true"
       />
@@ -121,9 +128,6 @@ export default function Hero({ profile }) {
               </div>
             )}
           </div>
-          <span className="absolute -bottom-3 -right-3 rounded-full border border-amber-soft bg-archive-bg px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-amber">
-            {profile.resumeNote || "พร้อมรับงานใหม่"}
-          </span>
         </div>
       </div>
     </section>

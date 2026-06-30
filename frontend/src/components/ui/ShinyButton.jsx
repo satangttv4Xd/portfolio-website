@@ -12,7 +12,7 @@ export default function ShinyButton({ children, onClick, type = "button", classN
       <span
         className="absolute inset-0 -z-10 animate-shimmer bg-[length:200%_100%] opacity-90"
         style={{
-          backgroundImage: "linear-gradient(110deg,#6B4226,45%,#F2A65A,55%,#6B4226)",
+          backgroundImage: "linear-gradient(110deg,var(--accent-soft-hex,#6B4226),45%,var(--accent-glow-hex,#F2A65A),55%,var(--accent-soft-hex,#6B4226))",
         }}
         aria-hidden="true"
       />

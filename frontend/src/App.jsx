@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useThemeColor } from "./hooks/useThemeColor.js";
+import { useColorMode } from "./hooks/useColorMode.js";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { fetchPortfolio, savePortfolio, resetPortfolio } from "./api/api.js";
 import { exportElementToPdf } from "./utils/exportPdf.js";
@@ -19,6 +21,8 @@ export default function App() {
   const [editOpen, setEditOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
   const printRef = useRef(null);
+  const { color: themeColor, changeColor } = useThemeColor();
+  const { mode: colorMode, changeMode } = useColorMode();
 
   useEffect(() => {
     load();
@@ -97,7 +101,7 @@ export default function App() {
       />
 
       <main ref={printRef}>
-        <Hero profile={data.profile} />
+        <Hero profile={data.profile} exporting={exporting} themeColor={themeColor} colorMode={colorMode} />
         <About about={data.about} />
         <Projects projects={data.projects} />
         <Skills skills={data.skills} />
@@ -113,6 +117,10 @@ export default function App() {
         data={data}
         onSave={handleSave}
         onResetDefault={handleResetDefault}
+        themeColor={themeColor}
+        onChangeThemeColor={changeColor}
+        colorMode={colorMode}
+        onChangeColorMode={changeMode}
       />
     </div>
   );

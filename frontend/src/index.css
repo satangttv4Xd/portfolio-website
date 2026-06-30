@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent-rgb: 217, 119, 46;
+  --accent-hex: #D9772E;
+  --accent-soft-hex: #6B4226;
+  --accent-glow-hex: #F2A65A;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -14,7 +21,7 @@ body {
 }
 
 ::selection {
-  background-color: #d9772e;
+  background-color: var(--accent-hex, #d9772e);
   color: #0e0d0c;
 }
 
@@ -29,12 +36,12 @@ body {
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b4226;
+  background: var(--accent-soft-hex, #6b4226);
 }
 
 /* โฟกัสด้วยคีย์บอร์ดให้เห็นชัดเจนเสมอ เพื่อการเข้าถึงที่ดี */
 :focus-visible {
-  outline: 2px solid #d9772e;
+  outline: 2px solid var(--accent-hex, #d9772e);
   outline-offset: 3px;
   border-radius: 4px;
 }

@@ -6,6 +6,7 @@ import SkillsForm from "./EditPanel/SkillsForm.jsx";
 import ProjectsForm from "./EditPanel/ProjectsForm.jsx";
 import ExperienceForm from "./EditPanel/ExperienceForm.jsx";
 import ContactForm from "./EditPanel/ContactForm.jsx";
+import ThemeColorPicker from "./ui/ThemeColorPicker.jsx";
 
 const TABS = [
   { key: "profile", label: "โปรไฟล์" },
@@ -14,9 +15,10 @@ const TABS = [
   { key: "projects", label: "ผลงาน" },
   { key: "experience", label: "ประสบการณ์" },
   { key: "contact", label: "ติดต่อ" },
+  { key: "theme", label: "ธีม" },
 ];
 
-export default function EditModePanel({ open, onClose, data, onSave, onResetDefault }) {
+export default function EditModePanel({ open, onClose, data, onSave, onResetDefault, themeColor, onChangeThemeColor, colorMode, onChangeColorMode }) {
   const [tab, setTab] = useState("profile");
   const [draft, setDraft] = useState(data);
   const [status, setStatus] = useState("idle"); // idle | saving | saved | error
@@ -102,9 +104,17 @@ export default function EditModePanel({ open, onClose, data, onSave, onResetDefa
             <ExperienceForm experience={draft.experience} onChange={(v) => setSection("experience", v)} />
           )}
           {tab === "contact" && <ContactForm contact={draft.contact} onChange={(v) => setSection("contact", v)} />}
+          {tab === "theme" && (
+            <ThemeColorPicker
+              color={themeColor}
+              onChange={onChangeThemeColor}
+              mode={colorMode}
+              onModeChange={onChangeColorMode}
+            />
+          )}
         </div>
 
-        <div className="border-t border-archive-line px-5 py-4">
+        <div className={`border-t border-archive-line px-5 py-4 ${tab === "theme" ? "hidden" : ""}`}>
           {status === "error" && <p className="mb-2 text-xs text-red-400">เกิดข้อผิดพลาด: {errorMsg}</p>}
           <div className="flex items-center gap-2">
             <button

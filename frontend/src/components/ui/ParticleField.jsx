@@ -4,8 +4,16 @@ import { useEffect, useRef } from "react";
  * อนุภาคฝุ่นลอยเบา ๆ พื้นหลัง hero (สไตล์ React Bits "Particles")
  * วาดด้วย canvas ล้วน ไม่พึ่งไลบรารีภายนอกเพื่อความเบาและเสถียร
  */
-export default function ParticleField({ count = 70, className = "" }) {
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+export default function ParticleField({ count = 70, className = "", color }) {
   const canvasRef = useRef(null);
+  const resolvedColor = color || getComputedStyle(document.documentElement).getPropertyValue('--accent-glow-hex').trim() || '#F2A65A';
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -40,7 +48,7 @@ export default function ParticleField({ count = 70, className = "" }) {
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(242,166,90,${p.a})`;
+        ctx.fillStyle = hexToRgba(resolvedColor, p.a);
         ctx.fill();
       });
     }
@@ -73,7 +81,7 @@ export default function ParticleField({ count = 70, className = "" }) {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };
-  }, [count]);
+  }, [count, resolvedColor]);
 
   return (
     <canvas
